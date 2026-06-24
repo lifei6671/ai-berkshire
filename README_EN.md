@@ -4,9 +4,9 @@
 >
 > Redefining the depth and efficiency of investment research with AI.
 
-**AI Berkshire** is a collection of investment research skills built on [Claude Code](https://claude.ai/code). It systematizes the methodologies of four value investing masters — Buffett, Munger, Duan Yongping, and Li Lu — and delivers professional-grade research through AI Agents.
+**AI Berkshire** is a collection of investment research skills built on Codex. It systematizes the methodologies of four value investing masters — Buffett, Munger, Duan Yongping, and Li Lu — and delivers professional-grade research through AI Agents.
 
-One person + Claude = an entire investment research team.
+One person + Codex = an entire investment research team.
 
 ---
 
@@ -44,7 +44,7 @@ One person + Claude = an entire investment research team.
 
 ## Why Can't You Just Ask AI Directly?
 
-You can, of course, ask Claude: "Should I buy Pinduoduo?" You'll get a balanced "on one hand... on the other hand..." analysis that ends with "investing involves risks, please make your own judgment."
+You can, of course, ask Codex: "Should I buy Pinduoduo?" You'll get a balanced "on one hand... on the other hand..." analysis that ends with "investing involves risks, please make your own judgment."
 
 **That kind of analysis looks right but can't drive actual decisions.**
 
@@ -173,94 +173,114 @@ Ask AI directly, and you have one context window. Four parallel Agents means 4×
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| [`/investment-research`](skills/investment-research.md) | Four-master comprehensive analysis | Full-spectrum research on a public company |
-| [`/investment-team`](skills/investment-team.md) | Multi-Agent parallel research team | 4 Agents in parallel — fastest and most comprehensive |
-| [`/management-deep-dive`](skills/management-deep-dive.md) | Management deep dive | "Buying a stock is buying its people" — when management is the key variable |
-| [`/private-company-research`](skills/private-company-research.md) | Private company research | Research info-scarce private companies like Ant Group, SpaceX |
-| [`/deep-company-series`](skills/deep-company-series.md) | 8-part long-form deep dive series | Publication-grade series, ~120K words from cognitive reset to decision closure |
+| [`/investment-research`](skills/investment-research/SKILL.md) | Four-master comprehensive analysis | Full-spectrum research on a public company |
+| [`/investment-team`](skills/investment-team/SKILL.md) | Multi-Agent parallel research team | 4 Agents in parallel — fastest and most comprehensive |
+| [`/management-deep-dive`](skills/management-deep-dive/SKILL.md) | Management deep dive | "Buying a stock is buying its people" — when management is the key variable |
+| [`/private-company-research`](skills/private-company-research/SKILL.md) | Private company research | Research info-scarce private companies like Ant Group, SpaceX |
+| [`/deep-company-series`](skills/deep-company-series/SKILL.md) | 8-part long-form deep dive series | Publication-grade series, ~120K words from cognitive reset to decision closure |
 
 ### 📊 Earnings Analysis
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| [`/earnings-review`](skills/earnings-review.md) | Earnings deep read (primary sources) | Read raw filings only — no sell-side reports — like Buffett reads annual reports |
-| [`/earnings-team`](skills/earnings-team.md) | Earnings team + publishable article | Four masters interpret earnings in parallel → editor polish → reader review → publish-ready |
+| [`/earnings-review`](skills/earnings-review/SKILL.md) | Earnings deep read (primary sources) | Read raw filings only — no sell-side reports — like Buffett reads annual reports |
+| [`/earnings-team`](skills/earnings-team/SKILL.md) | Earnings team + publishable article | Four masters interpret earnings in parallel → editor polish → reader review → publish-ready |
 
 ### 🏭 Industry Screening
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| [`/industry-research`](skills/industry-research.md) | Industry value chain scan | Map all investment opportunities across an industry's value chain |
-| [`/industry-funnel`](skills/industry-funnel.md) | Industry funnel screening | Full market → rough cut ≤10 → final pick 3, with deep analysis |
-| [`/quality-screen`](skills/quality-screen.md) | Quality screen (7 hard metrics) | Quickly eliminate non-first-class companies; supports single stock / industry / index / thematic batch screening |
-| [`/investment-checklist`](skills/investment-checklist.md) | Buffett pre-buy checklist | Six gates, 10-minute decision on whether to dig deeper |
+| [`/industry-research`](skills/industry-research/SKILL.md) | Industry value chain scan | Map all investment opportunities across an industry's value chain |
+| [`/industry-funnel`](skills/industry-funnel/SKILL.md) | Industry funnel screening | Full market → rough cut ≤10 → final pick 3, with deep analysis |
+| [`/quality-screen`](skills/quality-screen/SKILL.md) | Quality screen (7 hard metrics) | Quickly eliminate non-first-class companies; supports single stock / industry / index / thematic batch screening |
+| [`/investment-checklist`](skills/investment-checklist/SKILL.md) | Buffett pre-buy checklist | Six gates, 10-minute decision on whether to dig deeper |
 
 ### 📈 Portfolio Management
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| [`/portfolio-review`](skills/portfolio-review.md) | Portfolio review & optimization | Graduate from "researching companies" to "managing a portfolio" — sizing, concentration, rebalancing |
-| [`/thesis-tracker`](skills/thesis-tracker.md) | Investment thesis tracker | Post-buy discipline system: continuously track whether your thesis has been falsified |
-| [`/news-pulse`](skills/news-pulse.md) | Price-move rapid attribution | When a stock surges or drops — figure out "what happened" in 10 minutes |
+| [`/portfolio-review`](skills/portfolio-review/SKILL.md) | Portfolio review & optimization | Graduate from "researching companies" to "managing a portfolio" — sizing, concentration, rebalancing |
+| [`/thesis-tracker`](skills/thesis-tracker/SKILL.md) | Investment thesis tracker | Post-buy discipline system: continuously track whether your thesis has been falsified |
+| [`/news-pulse`](skills/news-pulse/SKILL.md) | Price-move rapid attribution | When a stock surges or drops — figure out "what happened" in 10 minutes |
 
 ### 🧠 Thinking Tools
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
-| [`/dyp-ask`](skills/dyp-ask.md) | Duan Yongping Q&A | Think through any question the Duan Yongping way — business, investing, life |
-| [`/financial-data`](skills/financial-data.md) | Financial data retrieval & cross-validation | Ensure key data comes from 2+ independent sources; alerts on >1% deviation |
+| [`/dyp-ask`](skills/dyp-ask/SKILL.md) | Duan Yongping Q&A | Think through any question the Duan Yongping way — business, investing, life |
+| [`/financial-data`](skills/financial-data/SKILL.md) | Financial data retrieval & cross-validation | Ensure key data comes from 2+ independent sources; alerts on >1% deviation |
 
 ---
 
 ## Quick Start
 
-### 1. Install Claude Code
+### 1. Install Codex
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+# Install and sign in to Codex using the official Codex instructions.
+# This repo only requires Codex to read Skill folders under ~/.codex/skills.
 ```
 
 ### 2. Install Skills
 
-Copy the `.md` files from the `skills/` directory to your Claude Code commands directory:
+Recommended one-command install:
+
+```bash
+# From npm after the package is published
+npx ai-berkshire
+
+# Or directly from the GitHub repository
+npx github:xbtlin/ai-berkshire
+```
+
+After cloning locally, you can also install with Node:
 
 ```bash
 # Clone the repository
 git clone https://github.com/xbtlin/ai-berkshire.git
 
-# Copy skills to Claude Code global commands directory
-cp ai-berkshire/skills/*.md ~/.claude/commands/
+# Install Codex Skills to ~/.codex/skills
+cd ai-berkshire
+node bin/install-codex-skills.js
+```
+
+Common options:
+
+```bash
+node bin/install-codex-skills.js --list
+node bin/install-codex-skills.js --dry-run
+node bin/install-codex-skills.js --dest /path/to/codex/skills
 ```
 
 ### 3. Use
 
-Invoke directly in Claude Code:
+Trigger the Skills in Codex using natural language:
 
 ```bash
 # Deep Research
-/investment-research Tencent
-/investment-team Meituan
-/management-deep-dive Wang Xing, Meituan
-/private-company-research SpaceX
-/deep-company-series Pinduoduo
+Use investment-research to analyze Tencent
+Use investment-team to research Meituan
+Use management-deep-dive to research Wang Xing and Meituan
+Use private-company-research to research SpaceX
+Use deep-company-series to write a Pinduoduo series
 
 # Earnings Analysis
-/earnings-review Tencent 2025Q4
-/earnings-team PDD 2025 Annual
+Use earnings-review to analyze Tencent 2025Q4
+Use earnings-team to analyze PDD 2025 Annual
 
 # Industry Screening
-/industry-research Nuclear Power
-/industry-funnel AI Compute
-/quality-screen Hang Seng Index Constituents
-/investment-checklist Moutai, NVIDIA, Apple
+Use industry-research to research nuclear power
+Use industry-funnel to screen AI compute
+Use quality-screen to screen Hang Seng Index constituents
+Use investment-checklist to check Moutai, NVIDIA, and Apple
 
 # Portfolio Management
-/portfolio-review Tencent 30%, Meituan 20%, Moutai 20%, Cash 30%
-/thesis-tracker Pinduoduo
-/news-pulse Tencent
+Use portfolio-review to review: Tencent 30%, Meituan 20%, Moutai 20%, Cash 30%
+Use thesis-tracker to track Pinduoduo
+Use news-pulse to attribute Tencent's recent price move
 
 # Thinking Tools
-/dyp-ask Where is Pinduoduo's real moat?
+Use dyp-ask to answer: Where is Pinduoduo's real moat?
 ```
 
 ---

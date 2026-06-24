@@ -1,6 +1,20 @@
+---
+name: investment-team
+description: 四角色并行投研团队流程。用于对上市公司进行商业模式、财务估值、行业竞争、风险管理层四维并行研究和综合结论输出。
+---
+
+## Codex 执行适配
+
+- 从用户请求解析研究对象和参数；不要依赖平台专有的 `$ARGUMENTS` 宏。
+- 当前日期使用运行环境提供的系统日期，格式 `YYYY-MM-DD`；涉及最新数据、股价、财报、新闻或监管信息时必须联网核验并标注来源。
+- 需要并行研究时，使用 Codex 可用的多代理能力，按无写冲突原则单轮最多派发 5 个子任务；子代理返回结构化 Markdown，由主代理汇总，不依赖平台专有消息总线。
+- 本地精确计算和抽检脚本优先使用 `skills/financial-data/scripts/financial_rigor.py` 与 `skills/financial-data/scripts/report_audit.py`；执行命令必须设置工作目录和超时。
+- 使用当前环境可用的网页搜索/浏览工具；打开原始来源并记录发布日期、访问日期和数据口径。
+- 读取文件优先 `rg`、`sed`、`nl`；修改文件优先 `apply_patch`，批量机械迁移可使用脚本化处理。
+
 # 投研团队：四角色并行分析框架
 
-对 $ARGUMENTS 进行团队化投资研究分析。使用 Team 工具创建真正的多Agent并行研究团队。
+对 用户输入的研究对象/参数 进行团队化投资研究分析。按 Codex 子代理批次组织多角色并行研究。
 
 ## 执行流程
 
@@ -10,7 +24,7 @@
 
 | 角色 | 职责 | 分析框架 |
 |------|------|----------|
-| **team-lead**（你自己） | 统筹协调、汇总研判、输出最终报告 | 四大师综合框架 |
+| **主代理**（你自己） | 统筹协调、汇总研判、输出最终报告 | 四大师综合框架 |
 | **business-analyst** | 商业模式 & 护城河分析 | 段永平视角 |
 | **financial-analyst** | 财务报表 & 估值分析 | 巴菲特视角 |
 | **industry-researcher** | 行业格局 & 竞争态势 | 芒格视角 |
@@ -18,34 +32,34 @@
 
 ### 第一步半：AI研究偏见评估
 
-在创建团队前，先向用户展示该公司的"AI可研究性"评估：
+在规划子代理批次前，先向用户展示该公司的"AI可研究性"评估：
 
 **信息丰富度评级**（决定研究策略）：
 | 等级 | 特征 | 研究策略调整 |
 |------|------|------------|
 | A级（信息充裕） | 上市多年、券商覆盖广 | 团队重点放在**反面检验**和**非共识视角**，避免输出与市场一致的"正确的废话" |
-| B级（信息适中） | 上市不久、覆盖有限 | 每个Agent的推算数据必须标注置信度，team-lead汇总时标注"数据充分度" |
+| B级（信息适中） | 上市不久、覆盖有限 | 每个子代理的推算数据必须标注置信度，主代理汇总时标注"数据充分度" |
 | C级（信息稀缺） | 冷门/新上市/新兴市场 | 团队转为"第一性原理模式"：不追求报告完整性，聚焦商业本质的几个核心问题 |
 
 **关键提醒**：资料多≠确定性高，资料少≠确定性低。AI能输出的置信度 ≠ 投资的真实确定性。确定性来自商业模式本身，不来自资料数量。
 
-将评级结果告知每个Agent，影响其研究方式。
+将评级结果告知每个子代理，影响其研究方式。
 
 ### 日期锚定（强制执行）
 
-当前日期为 `$CURRENT_DATE`。**每个Agent的任务描述中必须包含以下指令**：
+当前日期为 `运行环境当前日期`。**每个子代理的任务描述中必须包含以下指令**：
 
-> 研究日期：`$CURRENT_DATE`。所有数据必须是截至此日期的最新可得数据。"最近财年"=截至今日已披露的最近完整财年，"近5年"从最近完整财年往回推。搜索query中必须包含当前年份。股价/市值取最近交易日数据并标注日期。
+> 研究日期：`运行环境当前日期`。所有数据必须是截至此日期的最新可得数据。"最近财年"=截至今日已披露的最近完整财年，"近5年"从最近完整财年往回推。搜索query中必须包含当前年份。股价/市值取最近交易日数据并标注日期。
 
-### 第二步：创建团队
+### 第二步：规划子代理批次
 
-使用 TeamCreate 创建团队：
-- team_name: `{公司名}-research`（英文小写，如 `meituan-research`）
-- agent_type: `team-lead`
+规划 Codex 子代理批次：
+- batch_name: `{公司名}-research`（英文小写，如 `meituan-research`）
+- lead_role: `主代理`
 
 ### 第三步：创建4个任务
 
-使用 TaskCreate 创建以下4个任务（每个都要有 subject、description、activeForm）：
+记录以下4个任务（每个都要有 subject、description、任务显示名）：
 
 #### 任务1：商业模式分析
 - subject: `分析{公司名}商业模式、护城河与用户价值`
@@ -67,11 +81,11 @@
   4. 资产负债表健康度：现金储备、负债率、流动性
   5. 估值分析：PE/PS/PB/EV等，与历史及同业对比
   6. 安全边际评估：内在价值 vs 当前股价
-  7. **金融严谨性验证（必须使用Bash调用工具，禁止心算）**：
-     - 市值验算：`python3 ~/ai-berkshire/tools/financial_rigor.py verify-market-cap --price {价格} --shares {股本} --reported {报告市值} --currency {币种}`
-     - 估值验算：`python3 ~/ai-berkshire/tools/financial_rigor.py verify-valuation --price {价格} --eps {EPS} --bvps {每股净资产}`
-     - 关键数据交叉验证：`python3 ~/ai-berkshire/tools/financial_rigor.py cross-validate --field {字段} --values '{JSON}' --unit {单位}`
-     - 三情景估值：`python3 ~/ai-berkshire/tools/financial_rigor.py three-scenario --price {价格} --eps {EPS} --shares {股本亿} --growth {乐观} {中性} {悲观} --pe {乐观PE} {中性PE} {悲观PE}`
+  7. **金融严谨性验证（必须使用shell_command调用工具，禁止心算）**：
+     - 市值验算：`python3 skills/financial-data/scripts/financial_rigor.py verify-market-cap --price {价格} --shares {股本} --reported {报告市值} --currency {币种}`
+     - 估值验算：`python3 skills/financial-data/scripts/financial_rigor.py verify-valuation --price {价格} --eps {EPS} --bvps {每股净资产}`
+     - 关键数据交叉验证：`python3 skills/financial-data/scripts/financial_rigor.py cross-validate --field {字段} --values '{JSON}' --unit {单位}`
+     - 三情景估值：`python3 skills/financial-data/scripts/financial_rigor.py three-scenario --price {价格} --eps {EPS} --shares {股本亿} --growth {乐观} {中性} {悲观} --pe {乐观PE} {中性PE} {悲观PE}`
      - 将工具输出结果直接嵌入报告中作为验证记录
 
 #### 任务3：行业与竞争分析
@@ -97,17 +111,17 @@
   7. 长期确定性：10年后公司会怎样？什么可能颠覆其商业模式？
   8. 要求搜索最新监管动态、管理层言论等
 
-### 第四步：启动4个并行Agent
+### 第四步：启动 4 个并行子任务
 
-使用 Task 工具同时启动4个Agent（**必须在同一条消息中并行调用**）：
+并行派发 4 个 Codex 子任务：
 
-每个Agent的配置：
-- `subagent_type`: `general-purpose`
-- `run_in_background`: `true`
-- `team_name`: 对应团队名
+每个子任务的元数据：
+- `role`: `general-purpose`
+- `并行执行`: `true`
+- `batch_name`: 对应团队名
 - `name`: 对应角色名（business-analyst / financial-analyst / industry-researcher / risk-assessor）
 
-每个Agent的prompt模板：
+每个子代理的prompt模板：
 
 ```
 你是{公司名}投研团队中的"{角色中文名}"，负责从{大师名}投资视角分析{公司名}。
@@ -118,8 +132,8 @@
 {任务description的内容}
 
 **研究方法**：
-- 使用 WebSearch 搜索最新公开信息（财报、行业报告、新闻）
-- **财务数据必须来自两个独立来源**，按 `skills/financial-data.md` 规范执行（美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），两源误差>1%须标记
+- 使用 网页搜索/浏览工具 搜索最新公开信息（财报、行业报告、新闻）
+- **财务数据必须来自两个独立来源**，按 `skills/financial-data/SKILL.md` 规范执行（美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），两源误差>1%须标记
 - 确保数据准确，关键数据标注来源
 - 分析要深入，不流于表面
 
@@ -129,19 +143,19 @@
 - 报告末尾要有该维度的总体结论
 
 **完成后**：
-1. 使用 TaskUpdate 将任务 #{任务编号} 标记为 completed
-2. 通过 SendMessage 把完整分析报告发送给 team-lead（type: "message", recipient: "team-lead"）
+1. 在主代理进度清单中将任务 #{任务编号} 标记为 completed
+2. 将完整分析报告作为结构化结果返回给主代理（作为最终结构化输出返回）
 ```
 
 ### 第五步：接收报告并跟踪进度
 
-- 向用户实时展示进度表（哪些Agent已完成、哪些仍在研究中）
+- 向用户实时展示进度表（哪些子代理已完成、哪些仍在研究中）
 - 每收到一份报告，更新进度并展示该报告的核心要点（3-5条）
 - 等待全部4份报告到齐
 
 ### 第六步：关闭团队成员
 
-全部报告收到后，向4个Agent发送 shutdown_request（使用 SendMessage，type: "shutdown_request"）。
+全部报告收到后，关闭或停止跟踪本轮 4 个子代理。
 
 ### 第七步：汇总最终报告
 
@@ -190,13 +204,13 @@
 
 ```bash
 # Step 1 — 提取抽检清单（15%随机抽样）
-python3 ~/ai-berkshire/tools/report_audit.py extract \
+python3 skills/financial-data/scripts/report_audit.py extract \
   --report <报告文件路径>
 
-# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data.md）
+# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data/SKILL.md）
 
 # Step 3 — 输出准出/打回判决
-python3 ~/ai-berkshire/tools/report_audit.py verdict \
+python3 skills/financial-data/scripts/report_audit.py verdict \
   --results '<填好的JSON>' \
   --report <报告文件名>
 ```
@@ -205,15 +219,15 @@ python3 ~/ai-berkshire/tools/report_audit.py verdict \
 
 ### 第十步：清理团队
 
-使用 TeamDelete 清理团队资源。
+关闭本轮已启动的子代理并汇总结果。
 
 ## 重要注意事项
 
-1. **4个Agent必须并行启动**——在同一条消息中调用4次Task工具
-2. **Agent通过SendMessage汇报**——不是文件协作，是消息通信
-3. **数据准确性**——要求Agent使用WebSearch搜索最新数据，关键数据交叉验证
+1. **4个子代理必须并行启动**——并行派发 4 个 Codex 子任务
+2. **子代理通过返回结构化结果给主代理汇报**——不是文件协作，是消息通信
+3. **数据准确性**——要求子代理使用网页搜索/浏览工具搜索最新数据，关键数据交叉验证
 4. **结论要明确**——不回避给出买入/观望/回避建议和具体价格区间
 5. **所有分析必须有数据支撑**——附数据来源
-6. **耐心等待**——4个Agent研究需要几分钟，实时向用户更新进度
-7. **反偏见意识**——team-lead在汇总时必须评估：各Agent的分析是否受限于资料充裕度？是否与市场共识过度趋同？最终报告需包含"信息丰富度评级"和"AI研究局限性声明"
+6. **耐心等待**——4个子代理研究需要几分钟，实时向用户更新进度
+7. **反偏见意识**——主代理在汇总时必须评估：各子代理的分析是否受限于资料充裕度？是否与市场共识过度趋同？最终报告需包含"信息丰富度评级"和"AI研究局限性声明"
 8. **信息稀缺时的诚实原则**——宁可在报告中留白标注"数据不足"，也不要用推测填满框架伪装确定性

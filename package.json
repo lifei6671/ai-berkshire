@@ -1,0 +1,25 @@
+{
+  "name": "ai-berkshire",
+  "version": "0.1.0",
+  "description": "Codex Skills for value-investing research, financial data validation, and portfolio workflows.",
+  "license": "MIT",
+  "type": "commonjs",
+  "bin": {
+    "ai-berkshire": "./bin/install-codex-skills.js"
+  },
+  "files": [
+    "AGENTS.md",
+    "PROJECT.md",
+    "README.md",
+    "README_EN.md",
+    "LICENSE",
+    "bin/",
+    "skills/"
+  ],
+  "scripts": {
+    "validate": "node bin/install-codex-skills.js --dry-run"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

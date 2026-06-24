@@ -1,6 +1,20 @@
+---
+name: industry-research
+description: 行业投资研究流程。用于产业链全景扫描、行业格局分析、上市公司地图和四大师个股筛选。
+---
+
+## Codex 执行适配
+
+- 从用户请求解析研究对象和参数；不要依赖平台专有的 `$ARGUMENTS` 宏。
+- 当前日期使用运行环境提供的系统日期，格式 `YYYY-MM-DD`；涉及最新数据、股价、财报、新闻或监管信息时必须联网核验并标注来源。
+- 需要并行研究时，使用 Codex 可用的多代理能力，按无写冲突原则单轮最多派发 5 个子任务；子代理返回结构化 Markdown，由主代理汇总，不依赖平台专有消息总线。
+- 本地精确计算和抽检脚本优先使用 `skills/financial-data/scripts/financial_rigor.py` 与 `skills/financial-data/scripts/report_audit.py`；执行命令必须设置工作目录和超时。
+- 使用当前环境可用的网页搜索/浏览工具；打开原始来源并记录发布日期、访问日期和数据口径。
+- 读取文件优先 `rg`、`sed`、`nl`；修改文件优先 `apply_patch`，批量机械迁移可使用脚本化处理。
+
 # 行业投资研究：产业链全景扫描 + 四大师个股分析框架
 
-对 $ARGUMENTS 行业进行系统化产业链投资研究。
+对 用户输入的研究对象/参数 行业进行系统化产业链投资研究。
 
 ## 研究目标
 
@@ -15,7 +29,7 @@
 
 ## 日期锚定
 
-当前日期为 `$CURRENT_DATE`。所有数据搜索和引用必须基于此日期，搜索query中必须包含当前年份。"最新数据"=截至今日已公开的最新数据。
+当前日期为 `运行环境当前日期`。所有数据搜索和引用必须基于此日期，搜索query中必须包含当前年份。"最新数据"=截至今日已公开的最新数据。
 
 ## 第一步：投资逻辑链构建与验证
 
@@ -85,7 +99,7 @@
 
 ## 第三步：全球上市公司扫描
 
-使用 Task 工具启动后台 Agent，全面搜索该行业所有上市公司。
+派发 Codex 子任务全面搜索该行业所有上市公司。
 
 ### 搜索清单
 - 美股（NYSE/NASDAQ/NYSE American）相关公司
@@ -258,13 +272,13 @@
 
 ```bash
 # Step 1 — 提取抽检清单（15%随机抽样）
-python3 ~/ai-berkshire/tools/report_audit.py extract \
+python3 skills/financial-data/scripts/report_audit.py extract \
   --report <报告文件路径>
 
-# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data.md）
+# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data/SKILL.md）
 
 # Step 3 — 输出准出/打回判决
-python3 ~/ai-berkshire/tools/report_audit.py verdict \
+python3 skills/financial-data/scripts/report_audit.py verdict \
   --results '<填好的JSON>' \
   --report <报告文件名>
 ```

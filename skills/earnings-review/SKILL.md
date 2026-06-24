@@ -1,8 +1,22 @@
+---
+name: earnings-review
+description: 财报精读流程。用于基于一手财报、电话会和管理层材料分析上市公司最新季度或年度业绩。
+---
+
+## Codex 执行适配
+
+- 从用户请求解析研究对象和参数；不要依赖平台专有的 `$ARGUMENTS` 宏。
+- 当前日期使用运行环境提供的系统日期，格式 `YYYY-MM-DD`；涉及最新数据、股价、财报、新闻或监管信息时必须联网核验并标注来源。
+- 需要并行研究时，使用 Codex 可用的多代理能力，按无写冲突原则单轮最多派发 5 个子任务；子代理返回结构化 Markdown，由主代理汇总，不依赖平台专有消息总线。
+- 本地精确计算和抽检脚本优先使用 `skills/financial-data/scripts/financial_rigor.py` 与 `skills/financial-data/scripts/report_audit.py`；执行命令必须设置工作目录和超时。
+- 使用当前环境可用的网页搜索/浏览工具；打开原始来源并记录发布日期、访问日期和数据口径。
+- 读取文件优先 `rg`、`sed`、`nl`；修改文件优先 `apply_patch`，批量机械迁移可使用脚本化处理。
+
 # 财报精读：一手资料深度解读
 
-对 $ARGUMENTS 进行财报精读分析。
+对 用户输入的研究对象/参数 进行财报精读分析。
 
-**支持输入格式**：`公司名 季度`，例如：`腾讯 最新`（推荐，自动匹配截至 `$CURRENT_DATE` 已披露的最近一期）、`PDD 2025年报`、`美团 2025Q4`
+**支持输入格式**：`公司名 季度`，例如：`腾讯 最新`（推荐，自动匹配截至 `运行环境当前日期` 已披露的最近一期）、`PDD 2025年报`、`美团 2025Q4`
 
 > "我从不看卖方研报，只读原始财报。" —— 李录
 >
@@ -31,14 +45,14 @@
 
 ### 第一步：获取一手资料
 
-使用 Task 工具启动多个后台 Agent **并行**获取以下原始材料：
+使用 Codex 多代理能力并行获取以下原始材料：
 
 1. **财报原文**：从公司IR页面、SEC EDGAR（美股10-K/10-Q）、港交所披露易（港股）、巨潮资讯网（A股）获取
 2. **业绩电话会纪要/录音**：从 Seeking Alpha、公司IR页面、雪球等获取
 3. **管理层致股东信**（如有年报）：完整阅读
 4. **投资者日/分析师日材料**（如近期有）
 
-如果无法获取完整原文，按 `skills/financial-data.md` 规范使用标准数据源拼凑（美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），但必须标注"非原始财报，来自第三方汇总"，且关键数据两源误差>1%须标记。
+如果无法获取完整原文，按 `skills/financial-data/SKILL.md` 规范使用标准数据源拼凑（美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），但必须标注"非原始财报，来自第三方汇总"，且关键数据两源误差>1%须标记。
 
 ### 第二步：核心财务数据提取与验证
 
@@ -75,19 +89,19 @@
 - 存货周转天数变化（是否在积压？）
 - 商誉及无形资产占比（是否有减值风险？）
 
-**数据验证**：使用 `tools/financial_rigor.py` 对关键数据进行校验：
+**数据验证**：使用 `skills/financial-data/scripts/financial_rigor.py` 对关键数据进行校验：
 
 ```bash
 # 收入和净利润交叉验证（至少2个来源）
-python3 tools/financial_rigor.py cross-validate \
+python3 skills/financial-data/scripts/financial_rigor.py cross-validate \
   --metric "revenue" --values 108.3e9 107.9e9 --sources "公司财报" "Yahoo Finance"
 
 # 市值校验
-python3 tools/financial_rigor.py verify-market-cap \
+python3 skills/financial-data/scripts/financial_rigor.py verify-market-cap \
   --price 101 --shares 1.488e9 --reported 1.44e11 --currency USD
 
 # 估值指标验算
-python3 tools/financial_rigor.py verify-valuation \
+python3 skills/financial-data/scripts/financial_rigor.py verify-valuation \
   --price 101 --eps 9.6 --bvps 26.5 --fcf-per-share 10.2
 ```
 
@@ -196,13 +210,13 @@ python3 tools/financial_rigor.py verify-valuation \
 
 ```bash
 # Step 1 — 提取抽检清单
-python3 ~/ai-berkshire/tools/report_audit.py extract \
+python3 skills/financial-data/scripts/report_audit.py extract \
   --report reports/{公司名}-earnings-{期间}.md
 
-# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data.md）
+# Step 2 — 对清单每项从可靠信源取数（参见 skills/financial-data/SKILL.md）
 
 # Step 3 — 输出准出/打回判决
-python3 ~/ai-berkshire/tools/report_audit.py verdict \
+python3 skills/financial-data/scripts/report_audit.py verdict \
   --results '<填好的JSON>' \
   --report {报告文件名}
 ```

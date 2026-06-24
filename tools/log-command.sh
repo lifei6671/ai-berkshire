@@ -32,7 +32,7 @@ fi
 COUNT=$((COUNT + 1))
 echo "$COUNT" > "$COUNTER_FILE"
 
-# 每10条输出提醒（hook stdout 会显示给 Claude）
+# 每10条输出提醒（hook stdout 会显示给 Codex）
 if [ $((COUNT % 10)) -eq 0 ]; then
     TOTAL=$(wc -l < "$LOG_FILE" | tr -d ' ')
     echo "[指令日志] 已累计记录 ${TOTAL} 条指令。建议运行 /command-log 补充近期指令的背景摘要。"

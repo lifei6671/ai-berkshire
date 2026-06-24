@@ -1,6 +1,20 @@
+---
+name: investment-checklist
+description: 巴菲特式买入前 Checklist。用于对单个或多个公司快速进行能力圈、生意质量、护城河、管理层和安全边际筛查。
+---
+
+## Codex 执行适配
+
+- 从用户请求解析研究对象和参数；不要依赖平台专有的 `$ARGUMENTS` 宏。
+- 当前日期使用运行环境提供的系统日期，格式 `YYYY-MM-DD`；涉及最新数据、股价、财报、新闻或监管信息时必须联网核验并标注来源。
+- 需要并行研究时，使用 Codex 可用的多代理能力，按无写冲突原则单轮最多派发 5 个子任务；子代理返回结构化 Markdown，由主代理汇总，不依赖平台专有消息总线。
+- 本地精确计算和抽检脚本优先使用 `skills/financial-data/scripts/financial_rigor.py` 与 `skills/financial-data/scripts/report_audit.py`；执行命令必须设置工作目录和超时。
+- 使用当前环境可用的网页搜索/浏览工具；打开原始来源并记录发布日期、访问日期和数据口径。
+- 读取文件优先 `rg`、`sed`、`nl`；修改文件优先 `apply_patch`，批量机械迁移可使用脚本化处理。
+
 # 巴菲特价值投资买入前 Checklist
 
-对 $ARGUMENTS 执行巴菲特价值投资买入前 Checklist 分析。
+对 用户输入的研究对象/参数 执行巴菲特价值投资买入前 Checklist 分析。
 
 **支持输入格式**：单个或多个公司，用逗号/顿号/空格分隔。例如：`腾讯, 茅台, 英伟达` 或 `NVDA AAPL MSFT`
 
@@ -8,11 +22,11 @@
 
 ### 日期锚定
 
-当前日期为 `$CURRENT_DATE`。所有财务数据必须来自截至今日已披露的最新财年/季度，股价取最近交易日。搜索query中必须包含当前年份。
+当前日期为 `运行环境当前日期`。所有财务数据必须来自截至今日已披露的最新财年/季度，股价取最近交易日。搜索query中必须包含当前年份。
 
 ### 第一步：解析输入，识别所有待分析公司
 
-从 $ARGUMENTS 中解析出所有公司名称/代码。对每家公司确定：
+从 用户输入的研究对象/参数 中解析出所有公司名称/代码。对每家公司确定：
 - 公司全称、股票代码、上市交易所
 - 如果公司未上市，标记为"未上市"并给出简要说明（是否有间接投资途径），跳过完整Checklist
 
@@ -32,7 +46,7 @@
 
 ### 第二步：并行数据收集
 
-使用 Task 工具为**每家公司**启动独立的后台 Agent 进行数据收集（所有公司同时并行启动），每个Agent负责收集：
+为**每家公司**派发独立的 Codex 子任务进行数据收集（所有公司同时并行启动），每个子代理负责收集：
 
 1. **盈利能力**：ROE（5-10年趋势）、毛利率、净利率、自由现金流
 2. **估值数据**：当前股价、市值、PE(TTM)、前瞻PE、PB、股息率
@@ -73,7 +87,7 @@
 用数据说话，**关键指标必须通过工具精确计算**：
 
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py verify-valuation \
+python3 skills/financial-data/scripts/financial_rigor.py verify-valuation \
   --price {股价} --eps {EPS} --bvps {每股净资产} --fcf-per-share {每股FCF} --dividend {每股股息}
 ```
 
@@ -149,7 +163,7 @@ python3 ~/ai-berkshire/tools/financial_rigor.py verify-valuation \
 
 追加检验（**必须通过工具精确计算，禁止心算**）：
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py three-scenario \
+python3 skills/financial-data/scripts/financial_rigor.py three-scenario \
   --price {股价} --eps {EPS} --shares {股本亿} \
   --growth {乐观} {中性} {悲观} --pe {乐观PE} {中性PE} {悲观PE} --currency {币种}
 ```

@@ -2,16 +2,18 @@
 
 ## 项目概述
 
-基于 Claude Code 的价值投资研究 Skill 合集。四大师框架：巴菲特、芒格、段永平、李录。
+基于 Codex 的价值投资研究 Skill 合集。四大师框架：巴菲特、芒格、段永平、李录。
 GitHub: xbtlin/ai-berkshire
 
 ## 项目结构
 
 ```
-skills/          — 投研 Skill 定义（.md），复制到 ~/.claude/commands/ 使用
+skills/          — Codex Skill 目录，每个 Skill 使用 skills/<name>/SKILL.md
 tools/           — 辅助工具（financial_rigor.py 精确计算）
 reports/         — 投资研究报告输出
 assets/          — 图片等静态资源
+bin/             — Codex Skill 一键安装器
+package.json     — npm/npx 包入口，bin 命令为 ai-berkshire
 ```
 
 ## 报告目录结构
@@ -77,7 +79,7 @@ reports/{公司名}/
 
 ## 报告语言与风格
 
-- **语言自动检测**：根据 `$ARGUMENTS` 判断——如果参数中包含任何中文字符则全报告使用中文，纯ASCII/英文参数则全报告使用英文。示例：
+- **语言自动检测**：根据用户输入判断——如果参数中包含任何中文字符则全报告使用中文，纯ASCII/英文参数则全报告使用英文。示例：
   - `/investment-research 英特尔` → 中文报告
   - `/investment-research Intel` → English report
   - `/investment-team 阿里巴巴` → 中文报告
@@ -91,7 +93,7 @@ reports/{公司名}/
 
 ## GitHub 操作
 
-- 本地克隆路径：`~/ai-berkshire/`
+- 本地克隆路径：当前仓库根目录
 - 远程仓库：`https://github.com/xbtlin/ai-berkshire.git`
 - 推送前先 `git pull --rebase origin main`（远程经常有新提交）
 - commit message 用中文，描述清楚改了什么
@@ -101,7 +103,7 @@ reports/{公司名}/
 
 ```bash
 # 推送报告到GitHub
-cd ~/ai-berkshire
+cd <repo-root>
 git add reports/xxx.md
 git commit -m "添加xxx报告"
 git pull --rebase origin main
@@ -112,5 +114,5 @@ git push origin main
 
 - 市值必须手算校验：股价 × 总股本，与报告市值对比
 - 货币单位要明确（港币/人民币/美元），防止混淆
-- PE/ROE等指标用 tools/financial_rigor.py 精确计算
+- PE/ROE等指标用 skills/financial-data/scripts/financial_rigor.py 精确计算
 - 报告写完后主动询问是否推送到GitHub

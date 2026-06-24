@@ -1,6 +1,20 @@
+---
+name: investment-research
+description: 上市公司四大师综合投资研究。用于系统分析商业模式、护城河、管理层、行业趋势、风险和估值，并输出明确投资建议。
+---
+
+## Codex 执行适配
+
+- 从用户请求解析研究对象和参数；不要依赖平台专有的 `$ARGUMENTS` 宏。
+- 当前日期使用运行环境提供的系统日期，格式 `YYYY-MM-DD`；涉及最新数据、股价、财报、新闻或监管信息时必须联网核验并标注来源。
+- 需要并行研究时，使用 Codex 可用的多代理能力，按无写冲突原则单轮最多派发 5 个子任务；子代理返回结构化 Markdown，由主代理汇总，不依赖平台专有消息总线。
+- 本地精确计算和抽检脚本优先使用 `skills/financial-data/scripts/financial_rigor.py` 与 `skills/financial-data/scripts/report_audit.py`；执行命令必须设置工作目录和超时。
+- 使用当前环境可用的网页搜索/浏览工具；打开原始来源并记录发布日期、访问日期和数据口径。
+- 读取文件优先 `rg`、`sed`、`nl`；修改文件优先 `apply_patch`，批量机械迁移可使用脚本化处理。
+
 # 投资研究：巴菲特-芒格-段永平-李录 四大师综合分析框架
 
-对 $ARGUMENTS 进行系统化投资研究分析。
+对 用户输入的研究对象/参数 进行系统化投资研究分析。
 
 ## 研究框架
 
@@ -34,20 +48,20 @@
 
 ### 第一步：数据收集
 
-> **日期锚定（强制执行）**：当前日期为 `$CURRENT_DATE`。所有数据请求必须基于此日期：
+> **日期锚定（强制执行）**：当前日期为 `运行环境当前日期`。所有数据请求必须基于此日期：
 > - "最近财年"= 截至今日已披露的最近一个完整财年年报（如今天是2026年6月，多数公司2025年报已披露，则"最近财年"=2025）
 > - "最近季度"= 截至今日已披露的最近一个季度报告
 > - "近5年"= 从最近完整财年往回推5年（如最近财年2025，则取2021-2025）
 > - 股价/市值 = 最近一个交易日收盘价，必须标注具体日期
 > - **搜索query中必须包含当前年份**（如搜 "Microsoft revenue 2026"、"腾讯 2025年报"，而非不带年份的泛搜索）
-> - 每个数据收集Agent的prompt中必须包含：`研究日期：{当前日期}。所有数据必须是截至此日期的最新可得数据。`
+> - 每个数据收集子代理的prompt中必须包含：`研究日期：{当前日期}。所有数据必须是截至此日期的最新可得数据。`
 
-> **数据源规范**：参见 `skills/financial-data.md`。所有财务数据必须来自两个独立来源，误差>1%须标记。
+> **数据源规范**：参见 `skills/financial-data/SKILL.md`。所有财务数据必须来自两个独立来源，误差>1%须标记。
 > - 美股：macrotrends（主）+ stockanalysis（副）
 > - 港股：aastocks（主）+ macrotrends ADR（副）
 > - A股：东方财富（主）+ 巨潮资讯（副）
 
-使用 Task 工具启动后台 Agent，从网络收集以下数据：
+派发 Codex 子任务从网络收集以下数据：
 
 1. 收入结构：最近已披露财年及最近4个已披露季度的分部收入、增速、毛利率
 2. 财务指标：近5个已披露财年的收入、净利润、毛利率、经营利润率、自由现金流、现金储备
@@ -62,7 +76,7 @@
 
 #### 数据交叉验证（必须执行，使用金融严谨性工具）
 
-数据收集完成后，**必须调用 `tools/financial_rigor.py` 对关键数据进行程序化验证**，杜绝LLM心算误差。
+数据收集完成后，**必须调用 `skills/financial-data/scripts/financial_rigor.py` 对关键数据进行程序化验证**，杜绝LLM心算误差。
 
 **必须验证的数据点**：
 - 总股本（从交易所、Yahoo Finance、StockAnalysis 等至少2个源确认）
@@ -71,24 +85,24 @@
 - 现金储备和净现金（现金+短期投资-总债务，注意口径差异）
 - 管理层持股比例（区分经济权益和投票权，注意AB股结构）
 
-**强制验证步骤（使用Bash调用工具）**：
+**强制验证步骤（使用shell_command调用工具）**：
 
 Step 1 — 市值验算（精确十进制，非浮点）：
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py verify-market-cap \
+python3 skills/financial-data/scripts/financial_rigor.py verify-market-cap \
   --price {股价} --shares {总股本} --reported {报告市值} --currency {币种}
 ```
 
 Step 2 — 关键数据多源交叉验证：
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py cross-validate \
+python3 skills/financial-data/scripts/financial_rigor.py cross-validate \
   --field {字段名} --values '{"来源1": 数值, "来源2": 数值}' --unit {单位}
 ```
 对收入、净利润、现金储备分别执行。
 
 Step 3 — 估值指标精确验算（PE/PB/ROE/FCF Yield 等）：
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py verify-valuation \
+python3 skills/financial-data/scripts/financial_rigor.py verify-valuation \
   --price {股价} --eps {EPS} --bvps {每股净资产} --fcf-per-share {每股FCF} --dividend {每股股息}
 ```
 
@@ -197,7 +211,7 @@ python3 ~/ai-berkshire/tools/financial_rigor.py verify-valuation \
 - 反向DCF：当前股价隐含了什么增长预期？
 - 三情景估值 —— **必须通过工具精确计算，禁止心算**：
 ```bash
-python3 ~/ai-berkshire/tools/financial_rigor.py three-scenario \
+python3 skills/financial-data/scripts/financial_rigor.py three-scenario \
   --price {股价} --eps {EPS} --shares {总股本亿} \
   --growth {乐观增速} {中性增速} {悲观增速} \
   --pe {乐观PE} {中性PE} {悲观PE} --years 3 --currency {币种}
@@ -249,19 +263,19 @@ python3 ~/ai-berkshire/tools/financial_rigor.py three-scenario \
 
 **Step 1 — 提取抽检清单（15%随机抽样）：**
 ```bash
-python3 ~/ai-berkshire/tools/report_audit.py extract \
+python3 skills/financial-data/scripts/report_audit.py extract \
   --report <报告文件路径>
 ```
 输出 JSON 模板，每项含 `fetched_value`（待填）。
 
 **Step 2 — 取数核验：**
-对清单中每个数据点，按 `skills/financial-data.md` 规范从可靠信源取数
+对清单中每个数据点，按 `skills/financial-data/SKILL.md` 规范从可靠信源取数
 （美股：macrotrends+stockanalysis；港股：aastocks+macrotrends；A股：东方财富+巨潮资讯），
 填入 `fetched_value` / `fetched_source` / `fetched_value2` / `fetched_source2`。
 
 **Step 3 — 输出判决：**
 ```bash
-python3 ~/ai-berkshire/tools/report_audit.py verdict \
+python3 skills/financial-data/scripts/report_audit.py verdict \
   --results '<填好的JSON>' \
   --report <报告文件名>
 ```

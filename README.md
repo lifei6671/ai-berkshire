@@ -4,9 +4,9 @@
 >
 > 用 AI 重新定义投资研究的深度与效率。
 
-**AI Berkshire** 是一套基于 [Claude Code](https://claude.ai/code) 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
+**AI Berkshire** 是一套基于 Codex 的投资研究 Skill 合集，将巴菲特、芒格、段永平、李录四位价值投资大师的方法论系统化、结构化，通过 AI Agent 实现专业级投资研究。
 
-一个人 + Claude = 一个投研团队。
+一个人 + Codex = 一个投研团队。
 
 ---
 
@@ -44,7 +44,7 @@
 
 ## 为什么不能直接问 AI？
 
-你当然可以直接问 Claude："帮我分析拼多多值不值得买"。你会得到一篇"一方面...另一方面..."的平衡分析，最后以"投资有风险，请自行判断"收尾。
+你当然可以直接问 Codex："帮我分析拼多多值不值得买"。你会得到一篇"一方面...另一方面..."的平衡分析，最后以"投资有风险，请自行判断"收尾。
 
 **这种分析看起来对，但没法拿来做决策。**
 
@@ -172,94 +172,114 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 
 | Skill | 用途 | 适合场景 |
 |-------|------|---------|
-| [`/investment-research`](skills/investment-research.md) | 四大师综合深度分析 | 对一家上市公司进行全方位投资研究 |
-| [`/investment-team`](skills/investment-team.md) | 多Agent并行投研团队 | 4个Agent并行研究，最快速、最全面 |
-| [`/management-deep-dive`](skills/management-deep-dive.md) | 管理层纵深研究 | "买股票就是买人"——当管理层是核心变量时深挖 |
-| [`/private-company-research`](skills/private-company-research.md) | 未上市公司深度研究 | 研究蚂蚁、SpaceX等信息稀缺的未上市公司 |
-| [`/deep-company-series`](skills/deep-company-series.md) | 8篇长文系列拆一家公司 | 公众号级深度系列，12万字从认知重置到决策闭环 |
+| [`/investment-research`](skills/investment-research/SKILL.md) | 四大师综合深度分析 | 对一家上市公司进行全方位投资研究 |
+| [`/investment-team`](skills/investment-team/SKILL.md) | 多Agent并行投研团队 | 4个Agent并行研究，最快速、最全面 |
+| [`/management-deep-dive`](skills/management-deep-dive/SKILL.md) | 管理层纵深研究 | "买股票就是买人"——当管理层是核心变量时深挖 |
+| [`/private-company-research`](skills/private-company-research/SKILL.md) | 未上市公司深度研究 | 研究蚂蚁、SpaceX等信息稀缺的未上市公司 |
+| [`/deep-company-series`](skills/deep-company-series/SKILL.md) | 8篇长文系列拆一家公司 | 公众号级深度系列，12万字从认知重置到决策闭环 |
 
 ### 📊 财报分析类
 
 | Skill | 用途 | 适合场景 |
 |-------|------|---------|
-| [`/earnings-review`](skills/earnings-review.md) | 财报精读（一手资料） | 只读原始财报，不依赖二手研报，像巴菲特一样读年报 |
-| [`/earnings-team`](skills/earnings-team.md) | 财报精读团队 + 公众号发布 | 四大师并行解读财报 → 编辑润色 → 读者评审 → 可发布文章 |
+| [`/earnings-review`](skills/earnings-review/SKILL.md) | 财报精读（一手资料） | 只读原始财报，不依赖二手研报，像巴菲特一样读年报 |
+| [`/earnings-team`](skills/earnings-team/SKILL.md) | 财报精读团队 + 公众号发布 | 四大师并行解读财报 → 编辑润色 → 读者评审 → 可发布文章 |
 
 ### 🏭 行业筛选类
 
 | Skill | 用途 | 适合场景 |
 |-------|------|---------|
-| [`/industry-research`](skills/industry-research.md) | 产业链全景扫描 | 研究一个行业的全部投资机会（按产业链环节切片） |
-| [`/industry-funnel`](skills/industry-funnel.md) | 行业漏斗筛选 | 全市场 → 粗筛 ≤10 家 → 终选 3 家深度分析 |
-| [`/quality-screen`](skills/quality-screen.md) | 去劣筛选（7条硬指标） | 快速排除非一流公司，支持个股/行业/指数/主题批量筛 |
-| [`/investment-checklist`](skills/investment-checklist.md) | 巴菲特买入前 Checklist | 六关快速筛选，10分钟决定是否值得深入 |
+| [`/industry-research`](skills/industry-research/SKILL.md) | 产业链全景扫描 | 研究一个行业的全部投资机会（按产业链环节切片） |
+| [`/industry-funnel`](skills/industry-funnel/SKILL.md) | 行业漏斗筛选 | 全市场 → 粗筛 ≤10 家 → 终选 3 家深度分析 |
+| [`/quality-screen`](skills/quality-screen/SKILL.md) | 去劣筛选（7条硬指标） | 快速排除非一流公司，支持个股/行业/指数/主题批量筛 |
+| [`/investment-checklist`](skills/investment-checklist/SKILL.md) | 巴菲特买入前 Checklist | 六关快速筛选，10分钟决定是否值得深入 |
 
 ### 📈 持仓管理类
 
 | Skill | 用途 | 适合场景 |
 |-------|------|---------|
-| [`/portfolio-review`](skills/portfolio-review.md) | 组合管理与优化 | 从"研究公司"升级到"管理组合"——仓位、集中度、再平衡 |
-| [`/thesis-tracker`](skills/thesis-tracker.md) | 投资论文追踪 | 买入后的纪律系统：持续跟踪论文是否被证伪 |
-| [`/news-pulse`](skills/news-pulse.md) | 股价异动快速归因 | 股价大涨/大跌时10分钟搞清"发生了什么" |
+| [`/portfolio-review`](skills/portfolio-review/SKILL.md) | 组合管理与优化 | 从"研究公司"升级到"管理组合"——仓位、集中度、再平衡 |
+| [`/thesis-tracker`](skills/thesis-tracker/SKILL.md) | 投资论文追踪 | 买入后的纪律系统：持续跟踪论文是否被证伪 |
+| [`/news-pulse`](skills/news-pulse/SKILL.md) | 股价异动快速归因 | 股价大涨/大跌时10分钟搞清"发生了什么" |
 
 ### 🧠 思维工具类
 
 | Skill | 用途 | 适合场景 |
 |-------|------|---------|
-| [`/dyp-ask`](skills/dyp-ask.md) | 段永平问答 | 以段永平的方式思考任何问题——商业、投资、人生 |
-| [`/financial-data`](skills/financial-data.md) | 财务数据获取与交叉验证规范 | 确保关键数据来自2个独立来源，误差>1%告警 |
+| [`/dyp-ask`](skills/dyp-ask/SKILL.md) | 段永平问答 | 以段永平的方式思考任何问题——商业、投资、人生 |
+| [`/financial-data`](skills/financial-data/SKILL.md) | 财务数据获取与交叉验证规范 | 确保关键数据来自2个独立来源，误差>1%告警 |
 
 ---
 
 ## 快速开始
 
-### 1. 安装 Claude Code
+### 1. 安装 Codex
 
 ```bash
-npm install -g @anthropic-ai/claude-code
+# 按 Codex 官方方式安装并登录 Codex。
+# 本仓库只要求 Codex 能读取 ~/.codex/skills 下的 Skill 目录。
 ```
 
 ### 2. 安装 Skills
 
-将 `skills/` 目录下的 `.md` 文件复制到你的 Claude Code commands 目录：
+推荐用一键安装命令：
+
+```bash
+# 从 npm 包安装（发布到 npm 后可用）
+npx ai-berkshire
+
+# 或直接从 GitHub 仓库安装
+npx github:xbtlin/ai-berkshire
+```
+
+本地克隆后也可以用 Node 直接安装：
 
 ```bash
 # 克隆仓库
 git clone https://github.com/xbtlin/ai-berkshire.git
 
-# 复制 skills 到 Claude Code 全局 commands 目录
-cp ai-berkshire/skills/*.md ~/.claude/commands/
+# 安装 Codex Skills 到 ~/.codex/skills
+cd ai-berkshire
+node bin/install-codex-skills.js
+```
+
+常用选项：
+
+```bash
+node bin/install-codex-skills.js --list
+node bin/install-codex-skills.js --dry-run
+node bin/install-codex-skills.js --dest /path/to/codex/skills
 ```
 
 ### 3. 使用
 
-在 Claude Code 中直接调用：
+在 Codex 中用自然语言触发对应 Skill：
 
 ```bash
 # 深度研究
-/investment-research 腾讯
-/investment-team 美团
-/management-deep-dive 王兴 美团
-/private-company-research SpaceX
-/deep-company-series 拼多多
+使用 investment-research 分析腾讯
+使用 investment-team 研究美团
+使用 management-deep-dive 研究王兴和美团
+使用 private-company-research 研究 SpaceX
+使用 deep-company-series 写拼多多系列
 
 # 财报分析
-/earnings-review 腾讯 2025Q4
-/earnings-team PDD 2025年报
+使用 earnings-review 分析腾讯 2025Q4
+使用 earnings-team 分析 PDD 2025年报
 
 # 行业筛选
-/industry-research 核电
-/industry-funnel AI算力
-/quality-screen 恒生指数成分股
-/investment-checklist 茅台, 英伟达, 苹果
+使用 industry-research 研究核电
+使用 industry-funnel 筛选 AI 算力
+使用 quality-screen 筛选恒生指数成分股
+使用 investment-checklist 检查茅台、英伟达、苹果
 
 # 持仓管理
-/portfolio-review 腾讯30%, 美团20%, 茅台20%, 现金30%
-/thesis-tracker 拼多多
-/news-pulse 腾讯
+使用 portfolio-review 审视：腾讯30%, 美团20%, 茅台20%, 现金30%
+使用 thesis-tracker 跟踪拼多多
+使用 news-pulse 归因腾讯最近股价异动
 
 # 思维工具
-/dyp-ask 拼多多的护城河到底在哪里？
+使用 dyp-ask 回答：拼多多的护城河到底在哪里？
 ```
 
 ---
