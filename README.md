@@ -153,20 +153,25 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 
 ## 整体架构
 
-<p align="center">
-  <img src="assets/architecture.png" alt="AI Berkshire 整体架构" width="600" />
-</p>
+```mermaid
+flowchart TB
+    User(["👤 一个人 + Codex"])
+    User --> Skills
+    Skills["🎯 18 个 Codex Skill 入口"] --> Core["🧠 多 Agent 并行核心 · 四大师方法论对抗"]
+    Core --> Tools["🔧 精确计算 · 实时检索 · 报告抽检"]
+    Tools --> Report["📄 结构化研究报告"]
+```
 
-> 图源：[`assets/architecture.mmd`](assets/architecture.mmd)（Mermaid 可编辑源码）
+> 完整图源：[`assets/architecture.mmd`](assets/architecture.mmd)（Mermaid 可编辑源码）
 
 **三层设计哲学**：
-- **Skill 层**：把"你要做什么"抽象成 16 个明确入口——深度研究、财报分析、行业筛选、持仓管理、思维工具，按场景选用
+- **Skill 层**：把"你要做什么"抽象成 18 个明确入口——深度研究、财报分析、行业筛选、持仓管理、机会发现、内容输出、思维工具，按场景选用
 - **Agent 层**：每个 skill 内部都是 4 个 Agent 并行——它们各自独立搜索、独立判断、互相挑战，最后由 Team Lead 综合
 - **工具层**：精确计算、实时检索、报告抽检——保证每份报告的数据严谨性可验证
 
 ---
 
-## Skills 一览（16个）
+## Skills 一览（18个）
 
 ### 🔬 深度研究类
 
@@ -193,6 +198,7 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 | [`/industry-funnel`](skills/industry-funnel/SKILL.md) | 行业漏斗筛选 | 全市场 → 粗筛 ≤10 家 → 终选 3 家深度分析 |
 | [`/quality-screen`](skills/quality-screen/SKILL.md) | 去劣筛选（7条硬指标） | 快速排除非一流公司，支持个股/行业/指数/主题批量筛 |
 | [`/investment-checklist`](skills/investment-checklist/SKILL.md) | 巴菲特买入前 Checklist | 六关快速筛选，10分钟决定是否值得深入 |
+| [`/bottleneck-hunter`](skills/bottleneck-hunter/SKILL.md) | AI 产业瓶颈猎手 | 沿 AI 产业链寻找稀缺瓶颈、隐形冠军和高弹性标的 |
 
 ### 📈 持仓管理类
 
@@ -208,6 +214,12 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 |-------|------|---------|
 | [`/dyp-ask`](skills/dyp-ask/SKILL.md) | 段永平问答 | 以段永平的方式思考任何问题——商业、投资、人生 |
 | [`/financial-data`](skills/financial-data/SKILL.md) | 财务数据获取与交叉验证规范 | 确保关键数据来自2个独立来源，误差>1%告警 |
+
+### ✍️ 内容输出类
+
+| Skill | 用途 | 适合场景 |
+|-------|------|---------|
+| [`/wechat-article`](skills/wechat-article/SKILL.md) | 公众号文章改写 | 将投研报告改写成可读、可发布、观点清晰的长文 |
 
 ---
 
@@ -229,14 +241,14 @@ AI Berkshire 确保：**同样的输入 → 结构一致、深度一致的输出
 npx ai-berkshire
 
 # 或直接从 GitHub 仓库安装
-npx github:xbtlin/ai-berkshire
+npx github:lifei6671/ai-berkshire
 ```
 
 本地克隆后也可以用 Node 直接安装：
 
 ```bash
 # 克隆仓库
-git clone https://github.com/xbtlin/ai-berkshire.git
+git clone https://github.com/lifei6671/ai-berkshire.git
 
 # 安装 Codex Skills 到 ~/.codex/skills
 cd ai-berkshire
@@ -272,6 +284,7 @@ node bin/install-codex-skills.js --dest /path/to/codex/skills
 使用 industry-funnel 筛选 AI 算力
 使用 quality-screen 筛选恒生指数成分股
 使用 investment-checklist 检查茅台、英伟达、苹果
+使用 bottleneck-hunter 寻找 AI 产业链瓶颈标的
 
 # 持仓管理
 使用 portfolio-review 审视：腾讯30%, 美团20%, 茅台20%, 现金30%
@@ -280,6 +293,7 @@ node bin/install-codex-skills.js --dest /path/to/codex/skills
 
 # 思维工具
 使用 dyp-ask 回答：拼多多的护城河到底在哪里？
+使用 wechat-article 将腾讯投研报告改写成公众号文章
 ```
 
 ---
@@ -546,6 +560,170 @@ node bin/install-codex-skills.js --dest /path/to/codex/skills
 
 ---
 
+### 8. `/earnings-review` — 财报精读
+
+只围绕原始财报、公告和电话会材料做深读，适合季度或年度业绩发布后快速判断“业绩到底好不好”。
+
+**核心输出**：收入/利润/现金流拆解、管理层指引变化、关键业务指标、超预期与低预期项、需要继续跟踪的问题。
+
+调用方式：
+
+```
+/earnings-review 腾讯 2025Q4
+/earnings-review PDD 2025 年报
+```
+
+---
+
+### 9. `/earnings-team` — 财报精读团队
+
+把财报拆给四个视角并行解读，再由 Team Lead 合成研究底稿和可发布文章。适合重要持仓、重仓候选或市场分歧很大的财报。
+
+**核心输出**：四大师视角、研究底稿、公众号文章、读者评审和最终判断。
+
+调用方式：
+
+```
+/earnings-team 腾讯 2025Q4
+/earnings-team 阿里巴巴 FY2026Q4
+```
+
+---
+
+### 10. `/portfolio-review` — 组合管理与优化
+
+从“单个公司好不好”切换到“整个组合是否健康”。重点检查仓位集中度、相关性、风险暴露、现金比例和再平衡动作。
+
+**核心输出**：组合诊断、仓位建议、减仓/加仓优先级、风险情景和观察清单。
+
+调用方式：
+
+```
+/portfolio-review 腾讯30%, 美团20%, 茅台20%, 现金30%
+```
+
+---
+
+### 11. `/thesis-tracker` — 投资论文追踪
+
+买入后使用，持续追踪买入论文是否仍然成立。它不是重新写一份研报，而是检查关键假设有没有被证伪。
+
+**核心输出**：原始论文、关键假设、证伪信号、最新证据、动作建议（持有/加仓/减仓/退出）。
+
+调用方式：
+
+```
+/thesis-tracker 跟踪拼多多
+/thesis-tracker 更新腾讯论文
+```
+
+---
+
+### 12. `/management-deep-dive` — 管理层纵深研究
+
+当管理层是核心变量时使用。重点研究创始人、CEO、资本配置、激励机制、历史言行一致性和组织文化。
+
+**核心输出**：管理层画像、资本配置记录、诚信与能力评估、继任风险、红旗清单。
+
+调用方式：
+
+```
+/management-deep-dive 王兴和美团
+/management-deep-dive 黄峥和拼多多
+```
+
+---
+
+### 13. `/quality-screen` — 去劣快速筛选
+
+用 7 条硬指标快速排除差公司、平庸公司和财务质量不稳定的公司，适合批量筛行业、指数或主题池。
+
+**核心输出**：通过/淘汰名单、淘汰原因、可继续研究的候选池、需要人工复核的灰区。
+
+调用方式：
+
+```
+/quality-screen 筛选恒生指数成分股
+/quality-screen 筛选 AI 应用公司
+```
+
+---
+
+### 14. `/bottleneck-hunter` — AI 产业瓶颈猎手
+
+沿 AI 产业链寻找真正稀缺的瓶颈环节：产能卡点、供应链单点、设备材料约束、能源与基础设施约束。
+
+**核心输出**：瓶颈地图、受益公司清单、信号强度、可交易性、风险和跟踪指标。
+
+调用方式：
+
+```
+/bottleneck-hunter AI 产业链
+/bottleneck-hunter 寻找电力基础设施瓶颈标的
+```
+
+---
+
+### 15. `/dyp-ask` — 段永平问答
+
+把问题放进段永平的思维框架里：本分、长期、商业模式、消费者价值、少犯错。适合商业、投资和人生问题。
+
+**核心输出**：一句话判断、底层逻辑、反问、可执行建议和“不做什么”。
+
+调用方式：
+
+```
+/dyp-ask 拼多多的护城河到底在哪里？
+/dyp-ask 应不应该为了便宜买一家不懂的公司？
+```
+
+---
+
+### 16. `/financial-data` — 财务数据与交叉验证
+
+所有投研 Skill 的数据严谨性底座。要求关键财务数据来自至少两个独立来源，计算用精确十进制，并标注单位、币种和口径。
+
+**核心输出**：数据源清单、交叉验证结果、误差告警、精确计算过程和审计记录。
+
+调用方式：
+
+```
+/financial-data 校验腾讯市值、PE、ROE
+python3 skills/financial-data/scripts/financial_rigor.py calc --expr '510 * 9.11e9'
+```
+
+---
+
+### 17. `/wechat-article` — 公众号文章改写
+
+把投研报告改写成面向读者的长文：减少术语堆叠，强化故事线、标题、开头、转折和结论。
+
+**核心输出**：公众号正文、标题候选、摘要、分发文案和读者视角检查。
+
+调用方式：
+
+```
+/wechat-article 将腾讯投研报告改写成公众号文章
+/wechat-article 把 AI 五层蛋糕报告改成系列文章
+```
+
+---
+
+### 18. `/deep-company-series` — 深度公司系列
+
+为一家公司生成多篇连续长文，从认知重置、商业模式、竞争格局、财务、管理层到最终投资判断，适合做系统化内容资产。
+
+**核心输出**：系列大纲、分篇文章、统一叙事线、最终决策篇和可持续更新结构。
+
+调用方式：
+
+```
+/deep-company-series 写拼多多系列
+/deep-company-series 写一组看懂腾讯的长文
+```
+
+---
+
 ## 实战研究报告
 
 > 以下是使用本框架生成的真实投资研究报告，展示 AI 投研的实际输出效果。
@@ -646,4 +824,4 @@ MIT License
 > AI Berkshire：让每个人都拥有自己的投研团队。
 
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xbtlin/ai-berkshire&type=Date)](https://star-history.com/#xbtlin/ai-berkshire&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=lifei6671/ai-berkshire&type=Date)](https://star-history.com/#lifei6671/ai-berkshire&Date)

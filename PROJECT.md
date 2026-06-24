@@ -3,7 +3,7 @@
 ## 项目概述
 
 基于 Codex 的价值投资研究 Skill 合集。四大师框架：巴菲特、芒格、段永平、李录。
-GitHub: xbtlin/ai-berkshire
+GitHub: lifei6671/ai-berkshire
 
 ## 项目结构
 
@@ -54,6 +54,11 @@ reports/
 | /thesis-tracker | `{公司名}-thesis.md`（长期维护） | `reports/腾讯/腾讯-thesis.md` |
 | /portfolio-review | `portfolio-latest.md`（根目录，持续更新） | `reports/portfolio-latest.md` |
 | /management-deep-dive | `{公司名}-management-{YYYYMMDD}.md` | `reports/腾讯/腾讯-management-20260409.md` |
+| /quality-screen | `{主题名}-quality-screen-{YYYYMMDD}.md`（根目录或主题目录） | `reports/恒生指数-quality-screen-20260624.md` |
+| /bottleneck-hunter | `bottleneck-map/{YYYY-MM-DD}/{HH-MM}-信号扫描.md` 或 `{主题名}-bottleneck-{YYYYMMDD}.md` | `reports/bottleneck-map/daily/2026-06-24-am.md` |
+| /news-pulse | `{公司名}-news-pulse-{YYYYMMDD}.md` | `reports/腾讯/腾讯-news-pulse-20260624.md` |
+| /wechat-article | `{主题名}-wechat-{YYYYMMDD}.md` 或公司专题目录内公众号稿 | `reports/AI产业研究/公众号-AI五层蛋糕-框架篇-20260607.md` |
+| /deep-company-series | `{公司名}/《看懂{公司名}》/NN-{标题}.md` | `reports/腾讯/《看懂腾讯》/01-开篇-你以为你看懂了腾讯.md` |
 
 ## /investment-team 文件结构
 
@@ -94,7 +99,7 @@ reports/{公司名}/
 ## GitHub 操作
 
 - 本地克隆路径：当前仓库根目录
-- 远程仓库：`https://github.com/xbtlin/ai-berkshire.git`
+- 远程仓库：`https://github.com/lifei6671/ai-berkshire.git`
 - 推送前先 `git pull --rebase origin main`（远程经常有新提交）
 - commit message 用中文，描述清楚改了什么
 - 不要推送中间过程文件（如 data_collection.md），只推最终报告

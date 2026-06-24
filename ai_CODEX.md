@@ -30,12 +30,17 @@
 
 ### Skill体系演进
 
-**V1（5个Skill）— 覆盖买入前研究：**
+**V1（首批）— 覆盖买入前研究：**
 - investment-research、investment-team、investment-checklist、industry-research、private-company-research
 
-**V2（9个Skill）— 补齐买入后流程：**
+**V2（买入后扩展）— 补齐买入后流程：**
 - 新增：earnings-review（财报精读）、thesis-tracker（论文追踪）、portfolio-review（组合管理）、management-deep-dive（管理层纵深）
 - 经过2轮自验证迭代修复：路径统一、工具调用补全、并行收集、反偏见机制、量化评分公式
+
+**V3（18个Skill）— Codex 目录式 Skill 合集：**
+- 迁移为 `skills/<skill-name>/SKILL.md`，每个 Skill 包含 Codex 可识别的 `name` / `description` frontmatter
+- 新增/补齐：earnings-team、industry-funnel、quality-screen、bottleneck-hunter、dyp-ask、financial-data、wechat-article、deep-company-series、news-pulse 等完整工作流
+- 安装方式：`npx github:lifei6671/ai-berkshire` 或本地执行 `node bin/install-codex-skills.js`
 
 ## 项目核心卖点（README中已体现）
 

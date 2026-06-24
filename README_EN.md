@@ -154,20 +154,25 @@ Ask AI directly, and you have one context window. Four parallel Agents means 4×
 
 ## Architecture
 
-<p align="center">
-  <img src="assets/architecture.png" alt="AI Berkshire Architecture" width="600" />
-</p>
+```mermaid
+flowchart TB
+    User(["👤 One person + Codex"])
+    User --> Skills
+    Skills["🎯 18 Codex Skill entry points"] --> Core["🧠 Multi-Agent core · four-master dialectic"]
+    Core --> Tools["🔧 Exact calculation · live search · report audit"]
+    Tools --> Report["📄 Structured research reports"]
+```
 
-> Source: [`assets/architecture.mmd`](assets/architecture.mmd) (editable Mermaid diagram)
+> Full source: [`assets/architecture.mmd`](assets/architecture.mmd) (editable Mermaid diagram)
 
 **Three-Layer Design Philosophy**:
-- **Skill Layer**: Abstracts "what you want to do" into 16 clear entry points — deep research, earnings analysis, industry screening, portfolio management, and thinking tools. Pick by scenario.
+- **Skill Layer**: Abstracts "what you want to do" into 18 clear entry points — deep research, earnings analysis, industry screening, portfolio management, opportunity discovery, content publishing, and thinking tools. Pick by scenario.
 - **Agent Layer**: Each skill runs 4 Agents in parallel — they search independently, judge independently, challenge each other, and the Team Lead synthesizes.
 - **Tool Layer**: Exact-precision calculations, real-time web search, report auditing — ensures every report's data is rigorous and verifiable.
 
 ---
 
-## Skills Overview (16 Skills)
+## Skills Overview (18 Skills)
 
 ### 🔬 Deep Research
 
@@ -194,6 +199,7 @@ Ask AI directly, and you have one context window. Four parallel Agents means 4×
 | [`/industry-funnel`](skills/industry-funnel/SKILL.md) | Industry funnel screening | Full market → rough cut ≤10 → final pick 3, with deep analysis |
 | [`/quality-screen`](skills/quality-screen/SKILL.md) | Quality screen (7 hard metrics) | Quickly eliminate non-first-class companies; supports single stock / industry / index / thematic batch screening |
 | [`/investment-checklist`](skills/investment-checklist/SKILL.md) | Buffett pre-buy checklist | Six gates, 10-minute decision on whether to dig deeper |
+| [`/bottleneck-hunter`](skills/bottleneck-hunter/SKILL.md) | AI bottleneck hunter | Find scarce bottlenecks, hidden champions, and high-convexity names along the AI value chain |
 
 ### 📈 Portfolio Management
 
@@ -209,6 +215,12 @@ Ask AI directly, and you have one context window. Four parallel Agents means 4×
 |-------|---------|-------------|
 | [`/dyp-ask`](skills/dyp-ask/SKILL.md) | Duan Yongping Q&A | Think through any question the Duan Yongping way — business, investing, life |
 | [`/financial-data`](skills/financial-data/SKILL.md) | Financial data retrieval & cross-validation | Ensure key data comes from 2+ independent sources; alerts on >1% deviation |
+
+### ✍️ Content Publishing
+
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| [`/wechat-article`](skills/wechat-article/SKILL.md) | WeChat article rewriting | Turn research reports into readable, publishable, thesis-driven long-form articles |
 
 ---
 
@@ -230,14 +242,14 @@ Recommended one-command install:
 npx ai-berkshire
 
 # Or directly from the GitHub repository
-npx github:xbtlin/ai-berkshire
+npx github:lifei6671/ai-berkshire
 ```
 
 After cloning locally, you can also install with Node:
 
 ```bash
 # Clone the repository
-git clone https://github.com/xbtlin/ai-berkshire.git
+git clone https://github.com/lifei6671/ai-berkshire.git
 
 # Install Codex Skills to ~/.codex/skills
 cd ai-berkshire
@@ -273,6 +285,7 @@ Use industry-research to research nuclear power
 Use industry-funnel to screen AI compute
 Use quality-screen to screen Hang Seng Index constituents
 Use investment-checklist to check Moutai, NVIDIA, and Apple
+Use bottleneck-hunter to find AI value-chain bottleneck stocks
 
 # Portfolio Management
 Use portfolio-review to review: Tencent 30%, Meituan 20%, Moutai 20%, Cash 30%
@@ -281,6 +294,7 @@ Use news-pulse to attribute Tencent's recent price move
 
 # Thinking Tools
 Use dyp-ask to answer: Where is Pinduoduo's real moat?
+Use wechat-article to rewrite a Tencent research report into a WeChat article
 ```
 
 ---
@@ -548,6 +562,170 @@ Usage:
 
 ---
 
+### 8. `/earnings-review` — Earnings Deep Read
+
+Use after quarterly or annual results. It focuses on primary filings, announcements, and earnings-call materials to answer whether the earnings were actually good.
+
+**Core output**: Revenue/profit/cash-flow breakdown, guidance changes, key operating metrics, beats/misses, and follow-up questions.
+
+Usage:
+
+```
+/earnings-review Tencent 2025Q4
+/earnings-review PDD 2025 Annual
+```
+
+---
+
+### 9. `/earnings-team` — Earnings Research Team
+
+Splits the earnings review across four perspectives in parallel, then synthesizes a research memo and publishable article. Best for important holdings or disputed results.
+
+**Core output**: Four-master interpretation, research draft, article draft, reader review, and final judgment.
+
+Usage:
+
+```
+/earnings-team Tencent 2025Q4
+/earnings-team Alibaba FY2026Q4
+```
+
+---
+
+### 10. `/portfolio-review` — Portfolio Review
+
+Moves from “is this company good?” to “is the whole portfolio healthy?” It checks concentration, correlation, risk exposure, cash level, and rebalancing actions.
+
+**Core output**: Portfolio diagnosis, sizing advice, add/trim priorities, risk scenarios, and watchlist.
+
+Usage:
+
+```
+/portfolio-review Tencent 30%, Meituan 20%, Moutai 20%, Cash 30%
+```
+
+---
+
+### 11. `/thesis-tracker` — Investment Thesis Tracker
+
+Use after buying. It tracks whether the original buy thesis still holds instead of rewriting a full report from scratch.
+
+**Core output**: Original thesis, key assumptions, falsification signals, latest evidence, and action recommendation.
+
+Usage:
+
+```
+/thesis-tracker track Pinduoduo
+/thesis-tracker update Tencent thesis
+```
+
+---
+
+### 12. `/management-deep-dive` — Management Deep Dive
+
+Use when management is the key variable. It studies founders, CEOs, capital allocation, incentives, consistency between words and actions, and culture.
+
+**Core output**: Management profile, capital allocation record, integrity/capability assessment, succession risk, and red flags.
+
+Usage:
+
+```
+/management-deep-dive Wang Xing and Meituan
+/management-deep-dive Colin Huang and Pinduoduo
+```
+
+---
+
+### 13. `/quality-screen` — Quality Screen
+
+Uses seven hard metrics to quickly eliminate poor or mediocre companies and unstable financial profiles. Best for batch screening industries, indices, or themes.
+
+**Core output**: Pass/fail list, elimination reasons, candidates worth deeper work, and gray-zone names requiring manual review.
+
+Usage:
+
+```
+/quality-screen screen Hang Seng Index constituents
+/quality-screen screen AI application companies
+```
+
+---
+
+### 14. `/bottleneck-hunter` — AI Bottleneck Hunter
+
+Searches the AI value chain for scarce constraints: capacity bottlenecks, single-source suppliers, equipment/material limits, power, and infrastructure.
+
+**Core output**: Bottleneck map, beneficiary list, signal strength, tradability, risks, and tracking indicators.
+
+Usage:
+
+```
+/bottleneck-hunter AI value chain
+/bottleneck-hunter find power-infrastructure bottleneck stocks
+```
+
+---
+
+### 15. `/dyp-ask` — Duan Yongping Q&A
+
+Frames questions through Duan Yongping’s lens: doing the right thing, long-termism, business model, consumer value, and avoiding mistakes.
+
+**Core output**: One-line judgment, underlying logic, counter-questions, practical advice, and what not to do.
+
+Usage:
+
+```
+/dyp-ask Where is Pinduoduo's real moat?
+/dyp-ask Should I buy a company I do not understand just because it is cheap?
+```
+
+---
+
+### 16. `/financial-data` — Financial Data Validation
+
+The data-rigor layer for all research Skills. Key financial data must come from at least two independent sources, with exact decimal calculations and explicit units/currency/scope.
+
+**Core output**: Source list, cross-validation result, deviation warnings, exact calculation process, and audit trail.
+
+Usage:
+
+```
+/financial-data validate Tencent market cap, PE, ROE
+python3 skills/financial-data/scripts/financial_rigor.py calc --expr '510 * 9.11e9'
+```
+
+---
+
+### 17. `/wechat-article` — WeChat Article Rewriting
+
+Turns research reports into reader-facing long-form articles by reducing jargon and strengthening narrative, hook, structure, and conclusion.
+
+**Core output**: Article draft, title candidates, summary, distribution copy, and reader-perspective review.
+
+Usage:
+
+```
+/wechat-article rewrite a Tencent research report
+/wechat-article turn the AI five-layer cake report into a series
+```
+
+---
+
+### 18. `/deep-company-series` — Deep Company Series
+
+Creates a multi-part long-form series on one company, from cognitive reset and business model to competition, financials, management, and final investment judgment.
+
+**Core output**: Series outline, individual articles, unified narrative, final decision piece, and updateable structure.
+
+Usage:
+
+```
+/deep-company-series write a Pinduoduo series
+/deep-company-series write a “Understanding Tencent” series
+```
+
+---
+
 ## Live Research Reports
 
 > Below are real investment research reports generated with this framework, showcasing actual AI-powered research output quality.
@@ -649,4 +827,4 @@ MIT License
 > AI Berkshire: Giving everyone their own investment research team.
 
 
-[![Star History Chart](https://api.star-history.com/svg?repos=xbtlin/ai-berkshire&type=Date)](https://star-history.com/#xbtlin/ai-berkshire&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=lifei6671/ai-berkshire&type=Date)](https://star-history.com/#lifei6671/ai-berkshire&Date)

@@ -1,21 +1,23 @@
 flowchart TB
-    User(["👤 一个人 + Claude"])
+    User(["👤 一个人 + Codex"])
 
     User --> Skills
 
-    subgraph Skills["🎯 Skill 入口 · 按场景选择"]
+    subgraph Skills["🎯 Codex Skill 入口 · 18 个场景"]
         direction LR
-        S1["/investment-research<br/>综合深度分析"]
-        S2["/investment-team<br/>多Agent团队"]
-        S3["/investment-checklist<br/>买入前清单"]
-        S4["/industry-research<br/>产业链扫描"]
-        S5["/private-company-research<br/>未上市研究"]
-        S6["/news-pulse<br/>异动归因"]
+        S1["深度研究<br/>investment-research / investment-team"]
+        S2["财报分析<br/>earnings-review / earnings-team"]
+        S3["行业筛选<br/>industry-research / industry-funnel / quality-screen"]
+        S4["持仓管理<br/>portfolio-review / thesis-tracker / news-pulse"]
+        S5["机会发现<br/>bottleneck-hunter"]
+        S6["思维与数据<br/>dyp-ask / financial-data"]
+        S7["内容输出<br/>wechat-article / deep-company-series"]
+        S8["专项研究<br/>management-deep-dive / private-company-research"]
     end
 
     Skills --> Core
 
-    subgraph Core["🧠 多Agent 并行核心 · 四大师方法论对抗"]
+    subgraph Core["🧠 多 Agent 并行核心 · 四大师方法论对抗"]
         direction TB
         Lead{{"Team Lead<br/>统筹 · 综合研判"}}
         Lead --> A1["商业模式<br/>📍 段永平视角"]
@@ -29,11 +31,11 @@ flowchart TB
     subgraph Tools["🔧 工具与数据层"]
         direction LR
         T1["financial_rigor.py<br/>精确十进制计算"]
-        T2["WebSearch / WebFetch<br/>实时信息检索"]
-        T3["xueqiu_scraper.py<br/>大V观点抓取"]
+        T2["Web Search / Web Fetch<br/>实时信息检索"]
+        T3["xueqiu_scraper.py<br/>大 V 观点抓取"]
         T4["report_audit.py<br/>报告抽检准出"]
     end
 
     Tools --> Report
 
-    Report(["📄 结构化研究报告<br/>reports/{公司}/*.md"])
+    Report(["📄 结构化研究报告<br/>reports/{公司或主题}/*.md"])
